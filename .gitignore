@@ -1,0 +1,24 @@
+# Arquivo de credenciais do Firebase (CRÍTICO)
+firebase.json
+
+# Variáveis de ambiente (Onde está sua SECRET_KEY e senhas)
+.env
+
+# Ambiente Virtual do Python
+venv/
+.venv/
+env/
+
+# Arquivos temporários do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Pastas de IDEs (VS Code / PyCharm)
+.vscode/
+.idea/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db

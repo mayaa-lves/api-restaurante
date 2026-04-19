@@ -1,0 +1,164 @@
+openapi: 3.0.0
+info:
+  title: API de Artesanato - Guilherme
+  description: API para gestão de estoque e vendas de produtos artesanais.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:5000
+    description: Servidor Local (Development)
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+paths:
+  /login:
+    post:
+      tags:
+        - Autenticação
+      summary: Realiza login para obter o token de acesso
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                usuario:
+                  type: string
+                  example: "seu_usuario"
+                senha:
+                  type: string
+                  example: "sua_senha"
+      responses:
+        200:
+          description: Login realizado com sucesso
+        401:
+          description: Usuário ou senha inválidos
+
+  /produtos:
+    get:
+      tags:
+        - Produtos
+      summary: Lista todos os produtos cadastrados
+      responses:
+        200:
+          description: Lista de produtos retornada com sucesso
+    
+    post:
+      tags:
+        - Produtos
+      summary: Cadastra um novo produto (Requer Token)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+                  example: "Vaso de Barro Pintado"
+                preco:
+                  type: number
+                  example: 85.50
+                estoque:
+                  type: integer
+                  example: 10
+                categoria:
+                  type: string
+                  example: "Decoração"
+                ativo:
+                  type: boolean
+                  example: true
+      responses:
+        201:
+          description: Produto adicionado com sucesso
+        401:
+          description: Token ausente ou inválido
+
+  /produtos/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    
+    get:
+      tags:
+        - Produtos
+      summary: Busca um produto específico pelo ID
+      responses:
+        200:
+          description: Detalhes do produto
+        404:
+          description: Produto não encontrado
+
+    put:
+      tags:
+        - Produtos
+      summary: Atualiza totalmente um produto (Requer Token)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Produto'
+      responses:
+        200:
+          description: Produto atualizado com sucesso
+
+    patch:
+      tags:
+        - Produtos
+      summary: Atualiza parcialmente um produto (Requer Token)
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                preco:
+                  type: number
+                estoque:
+                  type: integer
+      responses:
+        200:
+          description: Campo atualizado com sucesso
+
+    delete:
+      tags:
+        - Produtos
+      summary: Remove um produto (Requer Token)
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Produto excluído com sucesso
+
+components:
+  schemas:
+    Produto:
+      type: object
+      properties:
+        nome:
+          type: string
+        preco:
+          type: number
+        estoque:
+          type: integer
+        categoria:
+          type: string
+        ativo:
+          type: boolean
