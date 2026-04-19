@@ -216,5 +216,10 @@ def error404(error):
 def error500(error):
     return jsonify({"error": "Servidor interno com falhas. Tente novamente mais tarde!"}), 500
 
+
+
+
+app = app    
+
 if __name__ == "__main__":
     app.run(debug=True)
